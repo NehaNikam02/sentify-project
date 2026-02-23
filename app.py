@@ -7,6 +7,11 @@ import nltk
 nltk.download('vader_lexicon')
 
 app = Flask(__name__)
+from flask import render_template
+
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 # ---------- PATH SETUP ----------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -692,4 +697,5 @@ new Chart(document.getElementById("riskRadar"), {{
 
 # ---------- RUN ----------
 if __name__ == "__main__":
+
     app.run(debug=True)
