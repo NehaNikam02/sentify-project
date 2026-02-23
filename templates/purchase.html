@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SENTIFY | Purchase</title>
+
+<style>
+body{
+  min-height:100vh;
+  background:#020617;
+  color:#E5E7EB;
+  font-family:"Segoe UI",sans-serif;
+  padding:80px 10%;
+  text-align:center;
+}
+
+h1{
+  color:#38BDF8;
+  margin-bottom:40px;
+}
+
+.card{
+  background:#0f172a;
+  padding:40px;
+  border-radius:25px;
+  max-width:700px;
+  margin:auto;
+}
+
+.link-btn{
+  display:block;
+  margin:18px 0;
+  padding:18px;
+  border-radius:50px;
+  text-decoration:none;
+  font-weight:600;
+  background:linear-gradient(90deg,#38BDF8,#22C55E);
+  color:#020617;
+  transition:0.3s ease;
+}
+
+.link-btn:hover{
+  transform:scale(1.05);
+}
+
+.back{
+  margin-top:40px;
+  color:#38BDF8;
+  text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="title"></h1>
+
+<div class="card">
+  <a id="amazon" class="link-btn" target="_blank">Amazon India</a>
+  <a id="flipkart" class="link-btn" target="_blank">Flipkart</a>
+  <a id="reliance" class="link-btn" target="_blank">Reliance Digital</a>
+  <a id="croma" class="link-btn" target="_blank">Croma</a>
+  <a id="vijay" class="link-btn" target="_blank">Vijay Sales</a>
+</div>
+
+<br>
+<a class="back" href="analysis.html">← Analyze Another Product</a>
+<script>
+const params = new URLSearchParams(window.location.search);
+const product = params.get("product");
+const brand = params.get("brand");
+
+const searchQuery = brand + " " + product;
+
+document.getElementById("title").innerText =
+"Buy " + brand.toUpperCase() + " " + product.toUpperCase();
+
+document.getElementById("amazon").href =
+"https://www.amazon.in/s?k=" + searchQuery.replace(" ","+");
+
+document.getElementById("flipkart").href =
+"https://www.flipkart.com/search?q=" + searchQuery.replace(" ","+");
+
+document.getElementById("reliance").href =
+"https://www.reliancedigital.in/search?q=" + searchQuery.replace(" ","%20");
+
+document.getElementById("croma").href =
+"https://www.croma.com/search/?text=" + searchQuery.replace(" ","%20");
+
+document.getElementById("vijay").href =
+"https://www.vijaysales.com/search/" + searchQuery.replace(" ","%20");
+</script>
+
+
+</body>
+</html>

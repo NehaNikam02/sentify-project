@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SENTIFY | Analyze Sentiment</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: url("bg_image.png") no-repeat center/cover fixed;
+  color: #E5E7EB;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    rgba(3, 7, 18, 0.88),
+    rgba(3, 7, 18, 0.92)
+  );
+  z-index: 0;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+  padding: 90px 7%;
+}
+
+/* ---------- HEADER ---------- */
+.header {
+  max-width: 1100px;
+}
+
+.header h1 {
+  font-size: 3rem;
+  color: #38BDF8;
+  margin-bottom: 18px;
+}
+
+.header p {
+  font-size: 1.05rem;
+  color: #CBD5F5;
+  line-height: 1.85;
+  max-width: 900px;
+}
+
+/* ---------- ANALYSIS STRIP ---------- */
+.analysis-strip {
+  margin-top: 70px;
+  padding: 28px;
+  border-radius: 22px;
+  background: rgba(15, 23, 42, 0.78);
+  backdrop-filter: blur(14px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+}
+
+/* ---------- FIELD ---------- */
+.field {
+  flex: 1 1 260px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  color: #93C5FD;
+}
+
+select {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  background: #020617;
+  color: #E5E7EB;
+  font-size: 0.95rem;
+}
+
+/* ---------- ACTION ---------- */
+.action {
+  flex: 1 1 220px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.action button {
+  width: 100%;
+  padding: 16px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  background: #38BDF8;
+  color: #020617;
+  transition: 0.35s ease;
+}
+
+.action button:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 18px 40px rgba(56,189,248,0.45);
+}
+
+/* ---------- INFO SECTION ---------- */
+.info {
+  margin-top: 80px;
+  max-width: 1000px;
+}
+
+.info h2 {
+  font-size: 2.2rem;
+  color: #38BDF8;
+  margin-bottom: 18px;
+}
+
+.info p {
+  font-size: 1.02rem;
+  color: #CBD5F5;
+  line-height: 1.85;
+}
+
+/* ---------- BACK LINK ---------- */
+.back {
+  margin-top: 50px;
+}
+
+.back a {
+  color: #38BDF8;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.back a:hover {
+  text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay"></div>
+
+<div class="main">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Analyze Product Sentiment</h1>
+  <p>
+    Select a product category and brand to analyze how people truly feel.
+    SENTIFY processes large-scale social media and review data to uncover
+    sentiment trends and emotional patterns behind customer opinions.
+  </p>
+</div>
+
+<!-- ANALYSIS STRIP -->
+<div class="analysis-strip">
+
+  <div class="field">
+    <label>Product Category</label>
+    <select id="category" onchange="updateBrands()">
+      <option value="">Select category</option>
+      <option value="mobile">Mobile Phones</option>
+      <option value="laptop">Laptops</option>
+      <option value="headphones">Headphones</option>
+      <option value="smart">Smart Devices</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Brand</label>
+    <select id="brand">
+      <option value="">Select brand</option>
+    </select>
+  </div>
+
+  <div class="action">
+    <button onclick="startAnalysis()">Analyze Sentiment</button>
+  </div>
+
+</div>
+
+<!-- INFO -->
+<div class="info">
+  <h2>Why This Analysis Matters</h2>
+  <p>
+    Traditional ratings fail to explain why users like or dislike a product.
+    SENTIFY bridges this gap by analyzing emotional tone and discussion patterns,
+    enabling organizations to make data-driven decisions based on real user sentiment.
+  </p>
+</div>
+
+<div class="back">
+  <a href="index.html">← Back to Home</a>
+</div>
+
+</div>
+
+<!-- ---------- SCRIPT ---------- -->
+<script>
+const brandMap = {
+  mobile: ["Apple", "Samsung", "OnePlus", "Realme", "Google", "Xiaomi", "Motorola"],
+  laptop: ["Apple", "HP", "Dell", "Lenovo", "Samsung", "ASUS", "Acer", "MSI", "CHUWI", "Infinix", "Primebook"],
+  headphones: ["boAt", "Flybot", "PTron", "Samsung", "JBL", "Sennheiser"],
+  smart: ["Amazon Alexa"]
+};
+
+function updateBrands() {
+  const category = document.getElementById("category").value;
+  const brandSelect = document.getElementById("brand");
+
+  brandSelect.innerHTML = '<option value="">Select brand</option>';
+
+  if (!category) return;
+
+  brandMap[category].forEach(brand => {
+    const option = document.createElement("option");
+    option.value = brand.toLowerCase();
+    option.textContent = brand;
+    brandSelect.appendChild(option);
+  });
+}
+
+function startAnalysis() {
+  const category = document.getElementById("category").value;
+  const brand = document.getElementById("brand").value;
+
+  if (!category || !brand) {
+    alert("Please select both category and brand");
+    return;
+  }
+
+  // DIRECTLY OPEN FLASK DYNAMIC PAGE
+  window.location.href = `http://127.0.0.1:5000/results/${category}/${brand}`;
+}
+
+</script>
+
+</body>
+</html>

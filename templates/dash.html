@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SENTIFY | Analytics Dashboard</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: url("bg_image.png") no-repeat center/cover fixed;
+  color: #E5E7EB;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    rgba(3, 7, 18, 0.9),
+    rgba(3, 7, 18, 0.95)
+  );
+  z-index: 0;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+  padding: 90px 6%;
+}
+
+/* ---------- HEADER ---------- */
+.header {
+  max-width: 1200px;
+}
+
+.header h1 {
+  font-size: 3rem;
+  color: #38BDF8;
+  margin-bottom: 16px;
+}
+
+.header p {
+  font-size: 1.05rem;
+  color: #CBD5F5;
+  line-height: 1.8;
+}
+
+/* ---------- KPI CARDS ---------- */
+.kpi-grid {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 26px;
+}
+
+.kpi {
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 22px;
+  padding: 26px;
+  backdrop-filter: blur(14px);
+  transition: 0.35s ease;
+}
+
+.kpi:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.6);
+}
+
+.kpi span {
+  font-size: 0.85rem;
+  color: #93C5FD;
+}
+
+.kpi h2 {
+  margin-top: 12px;
+  font-size: 2.4rem;
+  color: #E5E7EB;
+}
+
+/* ---------- GRID LAYOUT ---------- */
+.grid {
+  margin-top: 70px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 32px;
+}
+
+/* ---------- PANELS ---------- */
+.panel {
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 26px;
+  padding: 28px;
+  backdrop-filter: blur(14px);
+  position: relative;
+  overflow: hidden;
+}
+
+.panel h3 {
+  margin-bottom: 16px;
+  color: #38BDF8;
+}
+
+.panel p {
+  font-size: 0.95rem;
+  color: #CBD5F5;
+  line-height: 1.7;
+}
+
+/* ---------- CHART PLACEHOLDERS ---------- */
+.chart {
+  height: 220px;
+  border-radius: 18px;
+  background: linear-gradient(
+    135deg,
+    rgba(56,189,248,0.18),
+    rgba(15,23,42,0.9)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #93C5FD;
+  font-size: 0.9rem;
+}
+
+/* ---------- KEYWORDS ---------- */
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.keyword {
+  padding: 8px 14px;
+  border-radius: 18px;
+  background: rgba(56,189,248,0.15);
+  color: #93C5FD;
+  font-size: 0.85rem;
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  margin-top: 80px;
+}
+
+.footer a {
+  color: #38BDF8;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay"></div>
+
+<div class="main">
+
+<!-- HEADER -->
+<div class="header">
+  <h1>Sentiment Analytics Dashboard</h1>
+  <p>
+    This dashboard presents a comprehensive overview of sentiment and emotion analysis
+    derived from electronic product discussions across Twitter and review platforms.
+    Insights shown here help understand customer perception, emotional response, and trend evolution.
+  </p>
+</div>
+
+<!-- KPI CARDS -->
+<div class="kpi-grid">
+  <div class="kpi">
+    <span>Total Mentions Analyzed</span>
+    <h2>12,480</h2>
+  </div>
+  <div class="kpi">
+    <span>Positive Sentiment</span>
+    <h2>62%</h2>
+  </div>
+  <div class="kpi">
+    <span>Negative Sentiment</span>
+    <h2>21%</h2>
+  </div>
+  <div class="kpi">
+    <span>Neutral Sentiment</span>
+    <h2>17%</h2>
+  </div>
+</div>
+
+<!-- ANALYTICS GRID -->
+<div class="grid">
+
+  <div class="panel">
+    <h3>Sentiment Distribution</h3>
+    <div class="chart">Pie Chart Placeholder</div>
+  </div>
+
+  <div class="panel">
+    <h3>Emotion Breakdown</h3>
+    <div class="chart">Bar Chart Placeholder</div>
+  </div>
+
+  <div class="panel">
+    <h3>Sentiment Trend Over Time</h3>
+    <div class="chart">Line Chart Placeholder</div>
+  </div>
+
+  <div class="panel">
+    <h3>Top Keywords & Topics</h3>
+    <div class="keywords">
+      <div class="keyword">battery</div>
+      <div class="keyword">performance</div>
+      <div class="keyword">price</div>
+      <div class="keyword">camera</div>
+      <div class="keyword">durability</div>
+      <div class="keyword">design</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Insight Summary</h3>
+    <p>
+      Analysis indicates strong positive sentiment around performance and design,
+      while battery efficiency and pricing emerge as major drivers of dissatisfaction.
+      Emotional patterns suggest excitement during product launch phases followed by
+      gradual sentiment stabilization.
+    </p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <a href="index.html">← Back to Home</a>
+</div>
+
+</div>
+</body>
+</html>

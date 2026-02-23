@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SENTIFY | Sentiment Results</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",system-ui,sans-serif;}
+
+body{
+  min-height:100vh;
+  background:url("bg_image.png") no-repeat center/cover fixed;
+  color:#E5E7EB;
+}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(rgba(3,7,18,0.9),rgba(3,7,18,0.95));
+  z-index:0;
+}
+
+.main{
+  position:relative;
+  z-index:1;
+  padding:90px 7%;
+}
+
+/* HEADER */
+.header h1{
+  font-size:3rem;
+  color:#38BDF8;
+  margin-bottom:10px;
+}
+
+.header p{
+  max-width:900px;
+  font-size:1.05rem;
+  color:#CBD5F5;
+  line-height:1.85;
+}
+
+/* PRODUCT INFO */
+.product-box{
+  margin-top:40px;
+  padding:24px 28px;
+  border-radius:20px;
+  background:rgba(15,23,42,0.8);
+  backdrop-filter:blur(14px);
+  display:flex;
+  gap:40px;
+  flex-wrap:wrap;
+}
+
+.product-box div span{
+  display:block;
+  font-size:0.85rem;
+  color:#93C5FD;
+}
+
+.product-box div strong{
+  font-size:1.05rem;
+}
+
+/* DECISION */
+.decision{
+  margin-top:70px;
+  padding:45px;
+  border-radius:28px;
+  background:linear-gradient(135deg,rgba(34,197,94,0.22),rgba(15,23,42,0.9));
+}
+
+.decision h2{
+  font-size:2.5rem;
+  margin-bottom:12px;
+}
+
+.decision p{
+  font-size:1.05rem;
+  line-height:1.85;
+  color:#DCFCE7;
+}
+
+/* METRICS */
+.metrics{
+  margin-top:60px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:26px;
+}
+
+.metric{
+  padding:26px;
+  border-radius:22px;
+  background:rgba(15,23,42,0.85);
+  backdrop-filter:blur(14px);
+}
+
+.metric span{
+  font-size:0.85rem;
+  color:#93C5FD;
+}
+
+.metric h3{
+  margin-top:10px;
+  font-size:2.2rem;
+}
+
+/* EMOTIONS */
+.emotions{
+  margin-top:70px;
+}
+
+.emotions h3{
+  font-size:2rem;
+  color:#38BDF8;
+  margin-bottom:25px;
+}
+
+.emotion-bar{
+  margin-bottom:18px;
+}
+
+.emotion-bar span{
+  display:flex;
+  justify-content:space-between;
+  font-size:0.9rem;
+  margin-bottom:6px;
+}
+
+.bar{
+  height:14px;
+  border-radius:10px;
+  background:rgba(148,163,184,0.2);
+  overflow:hidden;
+}
+
+.fill{
+  height:100%;
+  border-radius:10px;
+}
+
+.happy{background:#22C55E;}
+.neutral{background:#38BDF8;}
+.angry{background:#EF4444;}
+.sad{background:#F59E0B;}
+
+/* INSIGHT */
+.insight{
+  margin-top:80px;
+  padding:35px;
+  border-radius:24px;
+  background:rgba(15,23,42,0.85);
+}
+
+.insight h3{
+  color:#38BDF8;
+  margin-bottom:14px;
+}
+
+.insight p{
+  font-size:1.02rem;
+  line-height:1.85;
+  color:#CBD5F5;
+}
+
+/* ACTIONS */
+.actions{
+  margin-top:60px;
+  display:flex;
+  gap:24px;
+  flex-wrap:wrap;
+}
+
+.actions button{
+  padding:14px 38px;
+  border-radius:40px;
+  border:none;
+  cursor:pointer;
+  font-size:0.95rem;
+  transition:0.35s ease;
+}
+
+.primary{
+  background:#38BDF8;
+  color:#020617;
+}
+
+.secondary{
+  background:transparent;
+  border:2px solid #38BDF8;
+  color:#38BDF8;
+}
+
+.actions button:hover{
+  transform:translateY(-4px) scale(1.05);
+  box-shadow:0 15px 35px rgba(56,189,248,0.4);
+}
+</style>
+</head>
+
+<body>
+<div class="overlay"></div>
+
+<div class="main">
+
+<div class="header">
+  <h1>Sentiment Analysis Results</h1>
+  <p>Public opinion and emotional patterns extracted from real user reviews.</p>
+</div>
+
+<div class="product-box">
+  <div>
+    <span>Product Category</span>
+    <strong id="categoryText"></strong>
+  </div>
+  <div>
+    <span>Brand / Product</span>
+    <strong id="brandText"></strong>
+  </div>
+  <div>
+    <span>Data Source</span>
+    <strong>Public Review Dataset</strong>
+  </div>
+</div>
+
+<div class="decision">
+  <h2 id="decisionTitle"></h2>
+  <p id="decisionText"></p>
+</div>
+
+<div class="metrics">
+  <div class="metric">
+    <span>Overall Sentiment Score</span>
+    <h3 id="score"></h3>
+  </div>
+  <div class="metric">
+    <span>Positive Mentions</span>
+    <h3 id="positive"></h3>
+  </div>
+  <div class="metric">
+    <span>Negative Mentions</span>
+    <h3 id="negative"></h3>
+  </div>
+  <div class="metric">
+    <span>Total Reviews</span>
+    <h3 id="total"></h3>
+  </div>
+</div>
+
+<div class="emotions">
+  <h3>Emotion Distribution</h3>
+
+  <div class="emotion-bar">
+    <span><em>Happy</em><em id="happyPercent"></em></span>
+    <div class="bar"><div class="fill happy" id="happyBar"></div></div>
+  </div>
+
+  <div class="emotion-bar">
+    <span><em>Neutral</em><em id="neutralPercent"></em></span>
+    <div class="bar"><div class="fill neutral" id="neutralBar"></div></div>
+  </div>
+
+  <div class="emotion-bar">
+    <span><em>Angry</em><em id="angryPercent"></em></span>
+    <div class="bar"><div class="fill angry" id="angryBar"></div></div>
+  </div>
+
+  <div class="emotion-bar">
+    <span><em>Sad</em><em id="sadPercent"></em></span>
+    <div class="bar"><div class="fill sad" id="sadBar"></div></div>
+  </div>
+</div>
+
+<div class="insight">
+  <h3>Decision Insight</h3>
+  <p id="dynamicInsight"></p>
+</div>
+
+<div class="actions">
+  <button class="primary" onclick="window.location.href='/dashboard/{product}/{brand}'">
+
+    View Detailed Dashboard
+  </button>
+
+  <button id="purchaseBtn" class="primary" style="display:none;">
+    Purchase Product
+  </button>
+
+  <button class="secondary" onclick="window.location.href='analysis.html'">
+    Analyze Another Product
+  </button>
+</div>
+
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const product = params.get("product");
+const brand = params.get("brand");
+
+fetch(`http://127.0.0.1:5000/api/analyze/${product}/${brand}`)
+.then(res => res.json())
+.then(data => {
+
+document.getElementById("categoryText").innerText =
+product.toUpperCase();
+
+document.getElementById("brandText").innerText =
+brand.toUpperCase();
+
+document.getElementById("score").innerText =
+data.sentiment.score + " / 100";
+
+document.getElementById("positive").innerText =
+data.sentiment.positive + "%";
+
+document.getElementById("negative").innerText =
+data.sentiment.negative + "%";
+
+document.getElementById("total").innerText =
+data.total_reviews;
+
+document.getElementById("happyBar").style.width =
+data.emotion.happy + "%";
+
+document.getElementById("neutralBar").style.width =
+data.emotion.neutral + "%";
+
+document.getElementById("angryBar").style.width =
+data.emotion.angry + "%";
+
+document.getElementById("sadBar").style.width =
+data.emotion.sad + "%";
+
+document.getElementById("happyPercent").innerText =
+data.emotion.happy + "%";
+
+document.getElementById("neutralPercent").innerText =
+data.emotion.neutral + "%";
+
+document.getElementById("angryPercent").innerText =
+data.emotion.angry + "%";
+
+document.getElementById("sadPercent").innerText =
+data.emotion.sad + "%";
+
+const negative = data.sentiment.negative;
+const purchaseBtn = document.getElementById("purchaseBtn");
+
+if (negative > 25) {
+  document.getElementById("decisionTitle").innerText =
+  "Proceed With Caution ⚠️";
+
+  document.getElementById("decisionTitle").style.color =
+  "#F59E0B";
+
+  document.getElementById("decisionText").innerText =
+  "Negative reviews exceed 25%. Please review feedback carefully.";
+
+  document.getElementById("dynamicInsight").innerText =
+  "Some users report concerns regarding performance, durability or pricing.";
+
+} else {
+  document.getElementById("decisionTitle").innerText =
+  "Recommended to Buy ✅";
+
+  document.getElementById("decisionTitle").style.color =
+  "#22C55E";
+
+  document.getElementById("decisionText").innerText =
+  "Overall public sentiment is strongly positive.";
+
+  document.getElementById("dynamicInsight").innerText =
+  "Minor issues exist but overall emotional trend favors this product.";
+}
+
+purchaseBtn.style.display = "inline-block";
+
+purchaseBtn.onclick = function(){
+  window.location.href =
+  `purchase_${product}_${brand}.html`;
+};
+
+});
+</script>
+
+</body>
+</html>

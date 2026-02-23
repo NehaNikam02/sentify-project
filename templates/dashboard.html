@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SENTIFY | Analytics Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: url("bg_image.png") no-repeat center/cover fixed;
+  color: #E5E7EB;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    rgba(3, 7, 18, 0.9),
+    rgba(3, 7, 18, 0.95)
+  );
+  z-index: 0;
+}
+
+.main {
+  position: relative;
+  z-index: 1;
+  padding: 90px 6%;
+}
+
+/* HEADER */
+.header {
+  max-width: 1200px;
+}
+
+.header h1 {
+  font-size: 3rem;
+  color: #38BDF8;
+  margin-bottom: 16px;
+}
+
+.header p {
+  font-size: 1.05rem;
+  color: #CBD5F5;
+  line-height: 1.8;
+}
+
+/* KPI CARDS */
+.kpi-grid {
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 26px;
+}
+
+.kpi {
+  background: rgba(15, 23, 42, 0.8);
+  border-radius: 22px;
+  padding: 26px;
+  backdrop-filter: blur(14px);
+  transition: 0.35s ease;
+}
+
+.kpi:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(0,0,0,0.6);
+}
+
+.kpi span {
+  font-size: 0.85rem;
+  color: #93C5FD;
+}
+
+.kpi h2 {
+  margin-top: 12px;
+  font-size: 2.4rem;
+  color: #E5E7EB;
+}
+
+/* GRID */
+.grid {
+  margin-top: 70px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 32px;
+}
+
+/* PANELS */
+.panel {
+  background: rgba(15, 23, 42, 0.85);
+  border-radius: 26px;
+  padding: 28px;
+  backdrop-filter: blur(14px);
+}
+
+.panel h3 {
+  margin-bottom: 16px;
+  color: #38BDF8;
+}
+
+canvas {
+  width: 100% !important;
+  height: 220px !important;
+}
+
+/* KEYWORDS */
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.keyword {
+  padding: 8px 14px;
+  border-radius: 18px;
+  background: rgba(56,189,248,0.15);
+  color: #93C5FD;
+  font-size: 0.85rem;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 80px;
+}
+
+.footer a {
+  color: #38BDF8;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+</style>
+</head>
+
+<body>
+<div class="overlay"></div>
+
+<div class="main">
+
+<div class="header">
+  <h1>Sentiment Analytics Dashboard</h1>
+  <p>
+    Comprehensive overview of sentiment and emotion analysis derived from product discussions.
+  </p>
+</div>
+
+<!-- KPI -->
+<div class="kpi-grid">
+  <div class="kpi">
+    <span>Total Mentions</span>
+    <h2 id="totalMentions">12,480</h2>
+  </div>
+  <div class="kpi">
+    <span>Positive</span>
+    <h2 id="positiveValue">62%</h2>
+  </div>
+  <div class="kpi">
+    <span>Negative</span>
+    <h2 id="negativeValue">21%</h2>
+  </div>
+  <div class="kpi">
+    <span>Neutral</span>
+    <h2 id="neutralValue">17%</h2>
+  </div>
+</div>
+
+<!-- GRID -->
+<div class="grid">
+
+  <div class="panel">
+    <h3>Sentiment Distribution</h3>
+    <canvas id="sentimentChart"></canvas>
+  </div>
+
+  <div class="panel">
+    <h3>Emotion Breakdown</h3>
+    <canvas id="emotionChart"></canvas>
+  </div>
+
+  <div class="panel">
+    <h3>Sentiment Trend Over Time</h3>
+    <canvas id="trendChart"></canvas>
+  </div>
+
+  <div class="panel">
+    <h3>Top Keywords</h3>
+    <div class="keywords" id="keywordContainer"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <a href="index.html">← Back to Home</a>
+</div>
+
+</div>
+
+<script>
+
+// ===== DYNAMIC DATA =====
+const data = {
+  positive: 62,
+  negative: 21,
+  neutral: 17,
+  emotions: {
+    labels: ['Joy', 'Anger', 'Sadness', 'Excitement', 'Trust'],
+    values: [45, 18, 12, 35, 40]
+  },
+  trend: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    values: [55, 60, 58, 65, 62, 68]
+  },
+  keywords: ['battery', 'performance', 'price', 'camera', 'durability', 'design']
+};
+
+// ===== PIE CHART =====
+new Chart(document.getElementById('sentimentChart'), {
+  type: 'pie',
+  data: {
+    labels: ['Positive', 'Negative', 'Neutral'],
+    datasets: [{
+      data: [data.positive, data.negative, data.neutral],
+      backgroundColor: ['#22C55E', '#EF4444', '#FACC15']
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        labels: { color: '#E5E7EB' }
+      }
+    }
+  }
+});
+
+// ===== BAR CHART =====
+new Chart(document.getElementById('emotionChart'), {
+  type: 'bar',
+  data: {
+    labels: data.emotions.labels,
+    datasets: [{
+      label: 'Emotion Intensity',
+      data: data.emotions.values,
+      backgroundColor: '#38BDF8'
+    }]
+  },
+  options: {
+    scales: {
+      x: { ticks: { color: '#E5E7EB' }},
+      y: { ticks: { color: '#E5E7EB' }}
+    },
+    plugins: {
+      legend: {
+        labels: { color: '#E5E7EB' }
+      }
+    }
+  }
+});
+
+// ===== LINE CHART =====
+new Chart(document.getElementById('trendChart'), {
+  type: 'line',
+  data: {
+    labels: data.trend.labels,
+    datasets: [{
+      label: 'Sentiment Score',
+      data: data.trend.values,
+      borderColor: '#38BDF8',
+      backgroundColor: 'rgba(56,189,248,0.2)',
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    scales: {
+      x: { ticks: { color: '#E5E7EB' }},
+      y: { ticks: { color: '#E5E7EB' }}
+    },
+    plugins: {
+      legend: {
+        labels: { color: '#E5E7EB' }
+      }
+    }
+  }
+});
+
+// ===== KEYWORDS DYNAMIC LOAD =====
+const keywordContainer = document.getElementById("keywordContainer");
+data.keywords.forEach(word => {
+  const div = document.createElement("div");
+  div.classList.add("keyword");
+  div.innerText = word;
+  keywordContainer.appendChild(div);
+});
+
+</script>
+
+</body>
+</html>

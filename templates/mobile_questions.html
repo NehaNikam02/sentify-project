@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SENTIFY | Mobile Intelligence</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI",system-ui,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  background:url("bg_image.png") no-repeat center/cover fixed;
+  color:#E5E7EB;
+}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(rgba(2,6,23,0.93),rgba(2,6,23,0.97));
+  z-index:0;
+}
+
+.container{
+  position:relative;
+  z-index:1;
+  padding:70px 8%;
+}
+
+h1{
+  text-align:center;
+  font-size:2.6rem;
+  margin-bottom:10px;
+  background:linear-gradient(90deg,#38BDF8,#22C55E);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+  text-align:center;
+  color:#94A3B8;
+  margin-bottom:50px;
+}
+
+.question{
+  margin-bottom:40px;
+}
+
+.question h3{
+  margin-bottom:18px;
+  font-size:1.2rem;
+  color:#38BDF8;
+}
+
+.options{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+}
+
+.option-card{
+  padding:18px;
+  border-radius:16px;
+  background:rgba(15,23,42,0.8);
+  text-align:center;
+  cursor:pointer;
+  transition:0.3s ease;
+  border:1px solid rgba(148,163,184,0.15);
+}
+
+.option-card:hover{
+  transform:translateY(-5px);
+  border-color:#38BDF8;
+}
+
+.option-card.selected{
+  background:linear-gradient(135deg,#38BDF8,#22C55E);
+  color:#020617;
+  font-weight:600;
+}
+
+button{
+  display:block;
+  margin:50px auto;
+  padding:18px 50px;
+  border:none;
+  border-radius:50px;
+  font-size:1rem;
+  cursor:pointer;
+  background:linear-gradient(90deg,#38BDF8,#22C55E);
+  color:#020617;
+  transition:0.3s ease;
+}
+
+button:hover{
+  transform:scale(1.05);
+}
+
+.result-box{
+  margin-top:40px;
+  text-align:center;
+  padding:30px;
+  border-radius:20px;
+  background:rgba(15,23,42,0.9);
+  display:none;
+}
+
+.result-box h2{
+  margin-bottom:20px;
+}
+
+.analysis-btn{
+  margin-top:20px;
+  padding:15px 35px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<div class="container">
+
+<h1>Mobile Preference Intelligence</h1>
+<p class="subtitle">Answer 10 quick questions and discover your ideal smartphone.</p>
+
+<div id="questions"></div>
+
+<button onclick="calculateResult()">Get Recommendation</button>
+
+<div class="result-box" id="resultBox">
+  <h2 id="recommendationText"></h2>
+  <button class="analysis-btn" onclick="goToAnalysis()">Smart Sentiment Analysis</button>
+</div>
+
+</div>
+
+<script>
+
+const brands = {
+  apple:0,
+  samsung:0,
+  oneplus:0,
+  realme:0,
+  google:0,
+  xiaomi:0,
+  motorola:0
+};
+
+const questions = [
+{
+q:"1. What is your budget range?",
+options:{
+"Premium (Above ₹70k)": ["apple","samsung"],
+"Mid Range (₹30k-70k)": ["oneplus","samsung","google"],
+"Budget (Below ₹30k)": ["xiaomi","realme","motorola"]
+}
+},
+{
+q:"2. Camera quality matters most?",
+options:{
+"Yes, top priority":["apple","google","samsung"],
+"Decent is fine":["oneplus","xiaomi"],
+"Not important":["realme","motorola"]
+}
+},
+{
+q:"3. Gaming performance?",
+options:{
+"High-end gaming":["oneplus","xiaomi","samsung"],
+"Casual gaming":["realme","motorola"],
+"Not needed":["google","apple"]
+}
+},
+{
+q:"4. Brand value matters?",
+options:{
+"Very important":["apple","samsung"],
+"Somewhat":["oneplus","google"],
+"Not much":["xiaomi","realme","motorola"]
+}
+},
+{
+q:"5. Clean Android experience?",
+options:{
+"Yes":["google","motorola"],
+"Customized UI ok":["xiaomi","realme"],
+"Premium iOS":["apple"]
+}
+},
+{
+q:"6. Battery life priority?",
+options:{
+"Very high":["xiaomi","realme","oneplus"],
+"Average fine":["samsung","motorola"],
+"Optimized enough":["apple","google"]
+}
+},
+{
+q:"7. Fast charging important?",
+options:{
+"Yes":["oneplus","realme","xiaomi"],
+"Not much":["apple","google"],
+"Moderate":["samsung","motorola"]
+}
+},
+{
+q:"8. Long-term software updates?",
+options:{
+"Yes":["apple","google","samsung"],
+"Not priority":["xiaomi","realme","motorola"]
+}
+},
+{
+q:"9. Display quality?",
+options:{
+"Best AMOLED":["samsung","oneplus"],
+"Good enough":["xiaomi","realme"],
+"Standard":["motorola","google","apple"]
+}
+},
+{
+q:"10. Innovation & AI features?",
+options:{
+"Yes":["google","samsung"],
+"Not required":["realme","motorola"],
+"Balanced":["apple","oneplus","xiaomi"]
+}
+}
+];
+
+const container=document.getElementById("questions");
+
+questions.forEach((item,index)=>{
+  let qDiv=document.createElement("div");
+  qDiv.className="question";
+
+  let qTitle=document.createElement("h3");
+  qTitle.innerText=item.q;
+  qDiv.appendChild(qTitle);
+
+  let optionsDiv=document.createElement("div");
+  optionsDiv.className="options";
+
+  Object.keys(item.options).forEach(optionText=>{
+    let card=document.createElement("div");
+    card.className="option-card";
+    card.innerText=optionText;
+
+    card.onclick=()=>{
+      let siblings=card.parentElement.children;
+      for(let s of siblings){ s.classList.remove("selected"); }
+      card.classList.add("selected");
+      card.dataset.brands=item.options[optionText];
+    };
+
+    optionsDiv.appendChild(card);
+  });
+
+  qDiv.appendChild(optionsDiv);
+  container.appendChild(qDiv);
+});
+
+function calculateResult(){
+  Object.keys(brands).forEach(b=>brands[b]=0);
+
+  const selected=document.querySelectorAll(".option-card.selected");
+
+  if(selected.length!==10){
+    alert("Please answer all 10 questions.");
+    return;
+  }
+
+  selected.forEach(card=>{
+    let affected=card.dataset.brands.split(",");
+    affected.forEach(b=>brands[b]+=1);
+  });
+
+  let recommended=Object.keys(brands).reduce((a,b)=>brands[a]>brands[b]?a:b);
+
+  document.getElementById("resultBox").style.display="block";
+  document.getElementById("recommendationText").innerText=
+  "🎯 Based on your preferences, we recommend: " + recommended.toUpperCase();
+
+  localStorage.setItem("recommendedProduct","mobile");
+  localStorage.setItem("recommendedBrand",recommended);
+}
+
+function goToAnalysis(){
+  window.location.href="analysis.html";
+}
+
+</script>
+
+</body>
+</html>
