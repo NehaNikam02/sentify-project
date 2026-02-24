@@ -23,6 +23,9 @@ def analysis():
 @app.route("/dashboard")
 def dashboard_page():
     return render_template("dashboard.html")
+@app.route("/purchase")
+def purchase():
+    return render_template("purchase.html")
 
 # ---------- PATH SETUP ----------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -710,4 +713,5 @@ new Chart(document.getElementById("riskRadar"), {{
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
