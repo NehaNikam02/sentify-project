@@ -22,7 +22,7 @@ def analysis():
 
 @app.route("/dashboard")
 def dashboard_page():
-    return render_template("dash.html")
+    return render_template("dashboard.html")
 @app.route("/purchase")
 def purchase():
     return render_template("purchase.html")
@@ -713,6 +713,7 @@ new Chart(document.getElementById("riskRadar"), {{
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
 
 
