@@ -14,9 +14,11 @@
 
 body {
   min-height: 100vh;
- style="background-image: url('{{ url_for('static', filename='bg_image.png') }}');"
+  background-image: url("{{ url_for('static', filename='bg_image.png') }}");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: #E5E7EB;
-  overflow-x: hidden;
 }
 
 .overlay {
@@ -277,6 +279,7 @@ body {
 </div>
 </body>
 </html>
+
 
 
 
