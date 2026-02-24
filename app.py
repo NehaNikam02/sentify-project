@@ -344,12 +344,12 @@ body {{
 
     View Detailed Dashboard
   </button>
-  <button class="secondary" onclick="window.location.href='http://127.0.0.1:5500/analysis.html'">
+  <button class="secondary" onclick="window.location.href='/analysis'">
     Analyze Another Product
   </button>
 
   <button class="primary" 
-  onclick="window.location.href='http://127.0.0.1:5500/purchase.html?product={product}&brand={brand}'"
+  onclick="window.location.href='/purchase?product={product}&brand={brand}'"
 
   style="background:#22C55E;">
     Purchase Product 
@@ -713,6 +713,7 @@ new Chart(document.getElementById("riskRadar"), {{
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
 
 
