@@ -26,6 +26,21 @@ def dashboard_page():
 @app.route("/purchase")
 def purchase():
     return render_template("purchase.html")
+@app.route("/mobile_questions")
+def mobile_questions():
+    return render_template("mobile_questions.html")
+
+@app.route("/laptop_questions")
+def laptop_questions():
+    return render_template("laptop_questions.html")
+
+@app.route("/headphones_questions")
+def headphones_questions():
+    return render_template("headphones_questions.html")
+
+@app.route("/smart_questions")
+def smart_questions():
+    return render_template("smart_questions.html")
 
 # ---------- PATH SETUP ----------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -713,6 +728,7 @@ new Chart(document.getElementById("riskRadar"), {{
 if __name__ == "__main__":
 
     app.run(debug=True)
+
 
 
 
