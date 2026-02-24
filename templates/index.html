@@ -259,8 +259,8 @@ body {
   <!-- VIDEO RIGHT SIDE -->
   <div class="hero-right">
     <video autoplay muted loop playsinline class="hero-video">
-      src="{{ url_for('static', filename='sentify.mp4') }}"
-    </video>
+  <source src="{{ url_for('static', filename='sentify.mp4') }}" type="video/mp4">
+</video>
   </div>
 
 </section>
@@ -279,6 +279,7 @@ body {
 </div>
 </body>
 </html>
+
 
 
 
