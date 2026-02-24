@@ -14,7 +14,7 @@
 
 body{
   min-height:100vh;
-  background:url("bg_image.png") no-repeat center/cover fixed;
+ background:url("{{ url_for('static', filename='bg_image.png') }}") no-repeat center/cover fixed;
   color:#E5E7EB;
 }
 
@@ -248,10 +248,12 @@ function calculateResult(){
 }
 
 function goToAnalysis(){
-  window.location.href="analysis.html";
+  const brand = localStorage.getItem("recommendedBrand");
+  window.location.href = `/results/smart/${brand}`;
 }
 
 </script>
 
 </body>
 </html>
+
