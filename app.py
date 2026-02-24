@@ -12,6 +12,17 @@ from flask import render_template
 @app.route("/")
 def home():
     return render_template("index.html")
+@app.route("/product_select")
+def product_select():
+    return render_template("product_select.html")
+
+@app.route("/analysis")
+def analysis():
+    return render_template("analysis.html")
+
+@app.route("/dashboard")
+def dashboard_page():
+    return render_template("dashboard.html")
 
 # ---------- PATH SETUP ----------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -699,3 +710,4 @@ new Chart(document.getElementById("riskRadar"), {{
 if __name__ == "__main__":
 
     app.run(debug=True)
+
