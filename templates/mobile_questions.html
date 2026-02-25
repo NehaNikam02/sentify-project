@@ -290,16 +290,13 @@ function calculateResult(){
   localStorage.setItem("recommendedProduct","mobile");
   localStorage.setItem("recommendedBrand",recommended);
 }
-
 function goToAnalysis(){
-  const brand = localStorage.getItem("recommendedBrand");
-  window.location.href = `/results/mobile/${brand}`;
-
+  window.location.href="/analysis";
 }
-
 </script>
 
 </body>
 </html>
+
 
 
