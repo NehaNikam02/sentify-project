@@ -338,5 +338,45 @@ body {
 </footer>
 
 
+/* ---------------- MOBILE RESPONSIVE FIX ---------------- */
+@media (max-width: 768px) {
+
+  .card {
+    width: 90%;
+    padding: 35px 25px;
+  }
+
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+  }
+
+  .analysis-strip {
+    flex-direction: column;
+  }
+
+  .field, .action {
+    flex: 1 1 100%;
+  }
+
+  .kpi-grid,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    padding: 25px 15px;
+  }
+
+}
 
 
