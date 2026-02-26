@@ -14,15 +14,13 @@
 
 body {
   min-height: 100vh;
-  background: url("bg_image.png") no-repeat center/cover fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: url("{{ url_for('static', filename='bg_image.png') }}") no-repeat center/cover fixed;
   color: #E5E7EB;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Dark overlay */
+/* Overlay */
 .overlay {
   position: fixed;
   inset: 0;
@@ -33,7 +31,7 @@ body {
   z-index: 0;
 }
 
-/* Animated glowing background circles */
+/* Floating glow */
 .glow1, .glow2 {
   position: absolute;
   border-radius: 50%;
@@ -66,10 +64,18 @@ body {
   100% { transform: translateY(0px); }
 }
 
-/* Main card */
-.card {
+/* Page wrapper */
+.page-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   z-index: 2;
+}
+
+/* Card */
+.card {
   background: rgba(15,23,42,0.85);
   backdrop-filter: blur(20px);
   padding: 60px 55px;
@@ -85,7 +91,6 @@ body {
   transform: translateY(-6px);
 }
 
-/* Title */
 .card h1 {
   font-size: 2.4rem;
   margin-bottom: 15px;
@@ -94,7 +99,6 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-/* Subtitle */
 .subtitle {
   font-size: 0.95rem;
   color: #94A3B8;
@@ -102,7 +106,6 @@ body {
   line-height: 1.6;
 }
 
-/* Dropdown */
 select {
   width: 100%;
   padding: 18px;
@@ -121,7 +124,6 @@ select:focus {
   outline: none;
 }
 
-/* Button */
 button {
   width: 100%;
   padding: 18px;
@@ -140,7 +142,6 @@ button:hover {
   box-shadow: 0 20px 50px rgba(34,197,94,0.4);
 }
 
-/* Back link */
 .back {
   margin-top: 25px;
   font-size: 0.9rem;
@@ -154,56 +155,9 @@ button:hover {
 .back a:hover {
   text-decoration: underline;
 }
-</style>
-</head>
 
-<body>
-
-<div class="overlay"></div>
-<div class="glow1"></div>
-<div class="glow2"></div>
-
-<div class="card">
-  <h1>Select Product Category</h1>
-  <p class="subtitle">
-    Tell us what you’re interested in, and we’ll guide you through
-    a smart recommendation process powered by sentiment intelligence.
-  </p>
-
-  <select id="product">
-    <option value="">Choose product</option>
-    <option value="mobile">Mobile Phones</option>
-    <option value="laptop">Laptops</option>
-    <option value="headphones">Headphones</option>
-    <option value="smart">Smart Devices</option>
-  </select>
-
-  <button onclick="goToQuestionnaire()">Start Smart Analysis</button>
-
-  <div class="back">
-    <a href="{{ url_for('home') }}">← Back to Home</a>
-  </div>
-</div>
-
-<script>
-function goToQuestionnaire() {
-  const product = document.getElementById("product").value;
-
-  if (!product) {
-    alert("Please select a product category");
-    return;
-  }
-
- window.location.href = `/${product}_questions`;
-}
-</script>
-
-</body>
-</html>
-
-<style>
+/* Footer */
 .footer {
-  margin-top: 120px;
   padding: 35px 20px;
   text-align: center;
   background: rgba(15, 23, 42, 0.85);
@@ -233,7 +187,6 @@ function goToQuestionnaire() {
   position: relative;
   font-size: 0.95rem;
   color: #CBD5F5;
-  letter-spacing: 0.5px;
 }
 
 .footer strong {
@@ -249,6 +202,37 @@ function goToQuestionnaire() {
   color: #94A3B8;
 }
 </style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+<div class="glow1"></div>
+<div class="glow2"></div>
+
+<div class="page-content">
+  <div class="card">
+    <h1>Select Product Category</h1>
+    <p class="subtitle">
+      Tell us what you’re interested in, and we’ll guide you through
+      a smart recommendation process powered by sentiment intelligence.
+    </p>
+
+    <select id="product">
+      <option value="">Choose product</option>
+      <option value="mobile">Mobile Phones</option>
+      <option value="laptop">Laptops</option>
+      <option value="headphones">Headphones</option>
+      <option value="smart">Smart Devices</option>
+    </select>
+
+    <button onclick="goToQuestionnaire()">Start Smart Analysis</button>
+
+    <div class="back">
+      <a href="{{ url_for('home') }}">← Back to Home</a>
+    </div>
+  </div>
+</div>
 
 <footer class="footer">
   <p>
@@ -257,3 +241,18 @@ function goToQuestionnaire() {
   <span>All Rights Reserved | Built with Data, Emotion & Intelligence</span>
 </footer>
 
+<script>
+function goToQuestionnaire() {
+  const product = document.getElementById("product").value;
+
+  if (!product) {
+    alert("Please select a product category");
+    return;
+  }
+
+  window.location.href = `/${product}_questions`;
+}
+</script>
+
+</body>
+</html>
