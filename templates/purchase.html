@@ -64,7 +64,7 @@ h1{
 </div>
 
 <br>
-<a class="back" href="analysis.html">← Analyze Another Product</a>
+<a class="back" href="{{ url_for('analysis') }}">← Analyze Another Product</a>
 <script>
 const params = new URLSearchParams(window.location.search);
 const product = params.get("product");
@@ -150,3 +150,4 @@ document.getElementById("vijay").href =
   </p>
   <span>All Rights Reserved | Built with Data, Emotion & Intelligence</span>
 </footer>
+
